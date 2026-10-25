@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giftie Studio Ultimate 🎁 - Kado Virtual Interaktif</title>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Sacramento&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Terpisah -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="theme-sakura">
+
+    <!-- DEKORASI LATAR BELAKANG -->
+    <div class="bg-decorations">
+        <span>✨</span><span>🌸</span><span>💖</span><span>🎀</span><span>⭐</span><span>☁️</span><span>🎁</span><span>🌷</span>
+    </div>
+
+    <!-- KARTU UTAMA APLIKASI -->
+    <div class="app-card">
+
+        <!-- ================= HALAMAN BUILDER (PEMBUAT KADO) ================= -->
+        <div id="builder-screen">
+            <header class="header">
+                <div class="badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Ultimate Surprise Creator</div>
+                <h1>Giftie Studio 🎁</h1>
+                <p>Buat kado virtual super lengkap, interaktif, & estetik!</p>
+            </header>
+
+            <form id="gift-form">
+                <!-- Nama Penerima & Pengirim -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-heart"></i> Untuk Siapa?</label>
+                        <input type="text" id="toName" placeholder="Contoh: Vanesa / Disna" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user"></i> Dari Siapa?</label>
+                        <input type="text" id="fromName" placeholder="Contoh: Nanat" required>
+                    </div>
+                </div>
+
+                <!-- Pilihan Tema Warna -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-palette"></i> Pilih Warna Tema</label>
+                    <div class="theme-selector">
+                        <div class="theme-btn active" data-theme="sakura" style="background:#FF85A1;" title="Sakura Pink"></div>
+                        <div class="theme-btn" data-theme="lavender" style="background:#B5179E;" title="Lavender Dream"></div>
+                        <div class="theme-btn" data-theme="mint" style="background:#2A9D8F;" title="Soft Mint"></div>
+                        <div class="theme-btn" data-theme="honey" style="background:#F4A261;" title="Honey Gold"></div>
+                    </div>
+                </div>
+
+                <!-- Pilihan 7 Jenis Kado & Minigame -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-gift"></i> Pilih Jenis Kado Interaktif</label>
+                    <div class="gift-grid">
+                        <div class="gift-tile active" data-type="box">
+                            <i class="fa-solid fa-box-open"></i>
+                            <span>Kotak 3D</span>
+                        </div>
+                        <div class="gift-tile" data-type="envelope">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                            <span>Surat Wax</span>
+                        </div>
+                        <div class="gift-tile" data-type="cake">
+                            <i class="fa-solid fa-cake-candles"></i>
+                            <span>Tiup Lilin</span>
+                        </div>
+                        <div class="gift-tile" data-type="balloon">
+                            <i class="fa-solid fa-balloon"></i>
+                            <span>Letus Balon</span>
+                        </div>
+                        <div class="gift-tile" data-type="scratch">
+                            <i class="fa-solid fa-ticket"></i>
+                            <span>Kartu Gosok</span>
+                        </div>
+                        <div class="gift-tile" data-type="polaroid">
+                            <i class="fa-solid fa-camera-retro"></i>
+                            <span>Polaroid</span>
+                        </div>
+                        <div class="gift-tile" data-type="musicbox">
+                            <i class="fa-solid fa-music"></i>
+                            <span>Music Box</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Isi Pesan Ucapan -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-pen-nib"></i> Pesan Spesial / Ucapan</label>
+                    <textarea id="message" rows="4" placeholder="Tuliskan isi surat, ucapan, atau harapan manis di sini..." required></textarea>
+                </div>
+
+                <!-- Media (Foto & YouTube) -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-image"></i> Link Foto (Opsional)</label>
+                    <input type="url" id="imageUrl" placeholder="https://i.ibb.co/xxxx/foto.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-brands fa-youtube"></i> Link YouTube Musik (Opsional)</label>
+                    <input type="text" id="youtubeUrl" placeholder="Contoh: https://youtu.be/xxxxx">
+                </div>
+
+                <!-- Tombol Submit -->
+                <button type="submit" class="btn btn-main">
+                    <i class="fa-solid fa-sparkles"></i> Buat & Dapatkan Link Kado
+                </button>
+            </form>
+        </div>
+
+        <!-- ================= HALAMAN VIEWER (PENERIMA KADO) ================= -->
+        <div id="viewer-screen" class="hidden">
+            <div class="viewer-header">
+                <h2 id="view-title">Ada Kado Spesial Untukmu! ✨</h2>
+                <p id="view-sub">Klik atau interaksikan kado di bawah untuk membukanya!</p>
+            </div>
+
+            <!-- Area Interaktif Kado -->
+            <div id="interactive-stage" class="stage"></div>
+
+            <!-- Surat & Kartu Ucapan -->
+            <div id="letter-card" class="letter-card hidden">
+                <div class="stamp"><i class="fa-solid fa-heart"></i></div>
+                <h3 id="letter-to">For You</h3>
+                <p id="letter-text"></p>
+                <div id="polaroid-frame" class="polaroid hidden">
+                    <img id="letter-img" src="" alt="Foto Kenangan">
+                </div>
+                <div id="letter-from" class="signature">With love</div>
+            </div>
+
+            <button id="btn-recreate" class="btn btn-sub hidden">
+                <i class="fa-solid fa-plus"></i> Buat Kado Kamu Sendiri
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ================= MODAL POPUP LINK ================= -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-icon">🎉</div>
+            <h2>Link Kado Berhasil Dibuat!</h2>
+            <p>Salin tautan di bawah ini dan kirimkan ke orang tersayang:</p>
+            <div id="generated-link" class="link-box"></div>
+            <button id="btn-copy-link" class="btn btn-main">
+                <i class="fa-solid fa-copy"></i> Salin Link Kado
+            </button>
+        </div>
+    </div>
+
+    <!-- YouTube Music Embed Tersembunyi -->
+    <div id="yt-player" class="hidden-player"></div>
+
+    <!-- JS Terpisah -->
+    <script src="script.js"></script>
+</body>
+</html>
